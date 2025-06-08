@@ -3,86 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <title>Handwritten Equation Solver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
             text-align: center;
-            padding: 40px;
-            background-color: #f4f4f4;
         }
 
         h1 {
+            margin-bottom: 20px;
             color: #333;
         }
 
-        form {
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            width: 400px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-
         input[type="file"] {
-            margin: 10px 0;
+            margin: 15px 0;
         }
 
         input[type="submit"] {
-            background-color: #5c6bc0;
+            background-color: #4a90e2;
             color: white;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            display: inline-block;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        input[type="submit"]:hover {
+            background-color: #357ab8;
         }
 
-        .image-preview {
-            max-width: 300px;
+        .message {
             margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
         }
 
         .error {
-            color: red;
+            color: #d8000c;
+            background-color: #ffdddd;
+            border: 1px solid #d8000c;
+        }
+
+        .result {
+            margin-top: 25px;
+        }
+
+        .image-preview {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <h1>📝 Handwritten Equation Solver</h1>
+    <div class="container">
+        <h1>🧠 Handwritten Equation Solver</h1>
 
-    <form action="/" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <br>
-        <input type="submit" value="Upload">
-    </form>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            <input type="submit" value="Upload & Solve">
+        </form>
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+            <div class="message error">
+                {{ error }}
+            </div>
+        {% endif %}
 
-    {% if expression %}
-        <div class="result-box">
-            <h3>Recognized expression:</h3>
-            <p><strong>{{ expression }}</strong></p>
+        {% if expression %}
+            <div class="result">
+                <div class="message">
+                    <strong>Recognized Expression:</strong><br>
+                    {{ expression }}
+                </div>
 
-            <h3>Result:</h3>
-            <p><strong>{{ result }}</strong></p>
+                <div class="message">
+                    <strong>Evaluation Result:</strong><br>
+                    {{ result }}
+                </div>
 
-            {% if image_path %}
-                <h3>Uploaded image:</h3>
-                <img class="image-preview" src="{{ image_path }}" alt="Uploaded image">
-            {% endif %}
-        </div>
-    {% endif %}
+                {% if image_path %}
+                    <div class="message">
+                        <strong>Uploaded Image:</strong><br>
+                        <img class="image-preview" src="{{ image_path }}" alt="Uploaded Image">
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
