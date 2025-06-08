@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>El Yazısı Matematik İfade Tanıma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+        }
+
+        input[type="submit"] {
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .image-preview {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 El Yazısı İfade Tanıma</h1>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <br>
+        <input type="submit" value="Yükle ve Tanı">
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if expression %}
+        <div class="result-box">
+            <h3>Tanınan İfade:</h3>
+            <p><strong>{{ expression }}</strong></p>
+
+            <h3>Sonuç:</h3>
+            <p><strong>{{ result }}</strong></p>
+
+            {% if image_path %}
+                <h3>Yüklenen Görsel:</h3>
+                <img class="image-preview" src="{{ image_path }}" alt="Yüklenen Görsel">
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>
