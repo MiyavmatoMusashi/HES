@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>El Yazısı Matematik İfade Tanıma</title>
+    <title>Handwritten Equation Solver</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,12 +58,12 @@
     </style>
 </head>
 <body>
-    <h1>📝 El Yazısı İfade Tanıma</h1>
+    <h1>📝 Handwritten Equation Solver</h1>
 
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="image/*" required>
         <br>
-        <input type="submit" value="Yükle ve Tanı">
+        <input type="submit" value="Load">
     </form>
 
     {% if error %}
@@ -72,15 +72,15 @@
 
     {% if expression %}
         <div class="result-box">
-            <h3>Tanınan İfade:</h3>
+            <h3>recognized expression:</h3>
             <p><strong>{{ expression }}</strong></p>
 
-            <h3>Sonuç:</h3>
+            <h3>Conclusion:</h3>
             <p><strong>{{ result }}</strong></p>
 
             {% if image_path %}
-                <h3>Yüklenen Görsel:</h3>
-                <img class="image-preview" src="{{ image_path }}" alt="Yüklenen Görsel">
+                <h3>Loaded img file:</h3>
+                <img class="image-preview" src="{{ image_path }}" alt="Loaded img file">
             {% endif %}
         </div>
     {% endif %}
