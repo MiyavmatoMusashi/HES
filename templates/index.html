@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Handwritten Equation Solver</title>
@@ -63,7 +63,7 @@
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="image/*" required>
         <br>
-        <input type="submit" value="Load">
+        <input type="submit" value="Upload">
     </form>
 
     {% if error %}
@@ -72,15 +72,15 @@
 
     {% if expression %}
         <div class="result-box">
-            <h3>recognized expression:</h3>
+            <h3>Recognized expression:</h3>
             <p><strong>{{ expression }}</strong></p>
 
-            <h3>Conclusion:</h3>
+            <h3>Result:</h3>
             <p><strong>{{ result }}</strong></p>
 
             {% if image_path %}
-                <h3>Loaded img file:</h3>
-                <img class="image-preview" src="{{ image_path }}" alt="Loaded img file">
+                <h3>Uploaded image:</h3>
+                <img class="image-preview" src="{{ image_path }}" alt="Uploaded image">
             {% endif %}
         </div>
     {% endif %}

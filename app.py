@@ -5,11 +5,11 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
-# Eğitilmiş modeli yükle
+# Load trained model
 model = tf.keras.models.load_model("char_model.h5")
 
 
-# Sınıf ID -> Sembol eşlemesi
+# Class ID -> Symbol mapping
 def class_id_to_symbol(class_id):
     symbol_map = {
         0: '0', 1: '1', 2: '2', 3: '3', 4: '4',
@@ -19,7 +19,7 @@ def class_id_to_symbol(class_id):
     return symbol_map.get(class_id, '?')
 
 
-# 28x28'e orantılı padding'li yeniden boyutlandırma
+# Resize with proportional padding to 28x28
 def resize_with_padding(img, size=28):
     h, w = img.shape
     scale = size / max(h, w)
@@ -32,7 +32,7 @@ def resize_with_padding(img, size=28):
     return padded
 
 
-# Görüntüden karakterleri ayıkla
+# Extract characters from image
 def extract_characters(image_path):
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     img = 255 - img
@@ -51,7 +51,7 @@ def extract_characters(image_path):
     return [char for _, char in chars]
 
 
-# Model ile tahmin
+# Predict using the model
 def predict_expression(model, char_images):
     expression = ""
     for img in char_images:
@@ -63,16 +63,16 @@ def predict_expression(model, char_images):
     return expression
 
 
-# İfadeyi değerlendir
+# Evaluate the expression
 def evaluate_expression(expression):
     try:
-        expression = expression.replace('÷', '/')  # ÷ yerine / kullan
+        expression = expression.replace('÷', '/')  # Replace ÷ with /
         return eval(expression)
     except Exception:
-        return "Geçersiz ifade"
+        return "Invalid expression"
 
 
-# Flask ayarları
+# Flask settings
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
@@ -85,17 +85,17 @@ def index():
 
     if request.method == "POST":
         if 'file' not in request.files:
-            return render_template("index.html", error="Dosya yüklenmedi.")
+            return render_template("index.html", error="No file uploaded.")
 
         file = request.files["file"]
         if file.filename == "":
-            return render_template("index.html", error="Dosya seçilmedi.")
+            return render_template("index.html", error="No file selected.")
 
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
 
-        # Görselden karakterleri ayıkla, tahmin et ve sonucu hesapla
+        # Extract characters from image, predict and evaluate
         char_images = extract_characters(filepath)
         expression = predict_expression(model, char_images)
         result = evaluate_expression(expression)
